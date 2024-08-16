@@ -2,7 +2,7 @@
 // que nos soluciona el problema de los elementos no cargados del DOM. Más info => https://www.w3schools.com/tags/att_script_defer.asp
 
 const DATA_URL = "json/data.json"; // URL que contiene los datos que queremos mostrar
-
+const hola = "https://japdevdep.github.io/ecommerce-api/category/all.json";
 const container = document.getElementById("container"); // "Traemos" utilizando el DOM el div de id "container" para colocar la información en él
 
 /**
@@ -19,3 +19,28 @@ function showData(dataArray) {
 }
 
 // Escribe el código necesario para realizar el fetch al archivo con los datos y mostrar los estudiantes con la función showData
+function getJSONData(url){
+  let result = {};
+  return fetch(url) 
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    }else{
+      throw Error(response.statusText);
+    }
+  })
+  .then(function(response) {
+        result.status = 'ok';
+        result.data = response;
+        showData(result.data.students)
+        return result;
+  })
+  .catch(function(error) {
+      result.status = 'error';
+      result.data = error;
+      return result;
+  });
+}
+
+getJSONData(DATA_URL);
+
